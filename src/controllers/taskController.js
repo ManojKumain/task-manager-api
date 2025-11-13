@@ -105,3 +105,22 @@ export const deleteTask = async (req, res, next) => {
   }
 };
 
+// Toggle Task Completion
+export const toggleTaskCompletion = async (req, res, next) => {
+  try {
+    const taskId = parseInt(req.params.id);
+    const task = await prisma.task.findUnique({ where: { id: taskId } });
+
+    if (!task) return res.status(404).json({ error: 'Task not found' });
+    if (task.userId !== req.user.id) return res.status(403).json({ error: 'Access denied.' });
+
+    const updatedTask = await prisma.task.update({
+      where: { id: taskId },
+      data: { completed: !task.completed }, // toggle
+    });
+
+    res.json({ message: 'Task status updated', task: updatedTask });
+  } catch (error) {
+    next(error);
+  }
+};
