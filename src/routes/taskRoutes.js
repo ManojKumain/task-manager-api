@@ -17,5 +17,5 @@ router.get('/:id', authMiddleware, getTaskById);
 router.put('/:id', authMiddleware, updateTask);
 router.delete('/:id', authMiddleware, deleteTask);
 
-router.patch('/:id/complete', authMiddleware, toggleTaskCompletion);
+
 export default router;
